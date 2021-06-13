@@ -10,6 +10,8 @@
 
 ![xxx](./public/assets/1.gif)
 
+<!-- 
+
 - 🔭 I’m currently working on: ChengDu . China
 - 🌱 I’m currently learning 
     - 🌱 JAVA
@@ -20,5 +22,7 @@
 - 📫 How to reach me: 
 - 😄 Pronouns:
 - ⚡ Fun fact: 
+
+-->
 
 ![seedscoder's GitHub stats](https://github-readme-stats.vercel.app/api?username=seedscoder&count_private=true&show_icons=true)

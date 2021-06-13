@@ -5,6 +5,8 @@ tags:
 - Ubuntu
 - Docker
 - Kubernetes
+categories: 云原生
+
 ---
 
 
