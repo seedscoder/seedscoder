@@ -183,13 +183,7 @@ sudo usermod -aG docker ${USER}
 
 #### 配置阿里云提供的Docker镜像加速地址
 
-登录阿里云控制台，搜索 `容器镜像服务`，点击左侧 `镜像工具 -> 镜像加速地址`
-
-```shell
-sudo tee /etc/docker/daemon.json <<-'EOF'{    "registry-mirrors": ["https://xxx.mirror.aliyuncs.com"]}EOFsudo systemctl daemon-reloadsudo systemctl restart docker
-```
-
-
+登录阿里云控制台，搜索 `容器镜像服务`，点击左侧 `镜像工具 -> 镜像加速地址
 
 
 
@@ -232,7 +226,8 @@ sudo curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo  apt-
 
 
 ```shel
-cat <<EOF >/etc/apt/sources.list.d/kubernetes.listdeb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial mainEOF
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.listdeb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+EOF
 ```
 
 
@@ -272,7 +267,13 @@ systemctl enable kubelet && systemctl start kubelet
 #### 初始化Master节点： 
 
 ```text
-kubeadm init \ --apiserver-advertise-address 192.168.12.203 \ --image-repository registry.aliyuncs.com/google_containers \ --kubernetes-version 1.20.7 \ --pod-network-cidr 10.10.0.0/16 \ --service-cidr 10.20.0.0/16 \ --upload-certs
+kubeadm init \
+--apiserver-advertise-address 192.168.12.201 \
+--image-repository registry.aliyuncs.com/google_containers \
+--kubernetes-version 1.20.7 \
+--pod-network-cidr 10.10.0.0/16 \
+--service-cidr 10.20.0.0/16 \
+--upload-certs
 ```
 
 #### flannel网络插件
@@ -305,10 +306,74 @@ kubeadm join 192.168.12.203:6443 --token cpbmqn.5lk0w4qzrcinuo97 \    --discover
 kubectl get nodes
 ```
 
-
+#### 查看pod的描述
 
 ```text
-kubectl describe pod -n kube-system  kube-flannel-ds-r8
+kubectl describe pod -n kubesphere-system ks-installer-6f4c9fcfcf-92prt 
+```
+
+
+
+### 安装 nfs server
+
+#### 安装
+
+```
+sudo apt install nfs-kernel-server
+```
+
+- 可能出现问题：
+
+  - ```
+    vagrant@node-201:~$ sudo apt install nfs-kernel-server
+    Reading package lists... Done
+    Building dependency tree
+    Reading state information... Done
+    Some packages could not be installed. This may mean that you have
+    requested an impossible situation or if you are using the unstable
+    distribution that some required packages have not yet been created
+    or been moved out of Incoming.
+    The following information may help to resolve the situation:
+    
+    The following packages have unmet dependencies:
+     nfs-kernel-server : Depends: libtirpc1 but it is not going to be installed
+                         Depends: nfs-common (= 1:1.2.8-6ubuntu1.2) but it is not going to be installed
+    E: Unable to correct problems, you have held broken packages.
+    
+    ```
+
+  - 解决办法：把安装源修改成刚开始备份的安装源。
+
+#### 配置nfs server
+
+- /etc/exports
+
+```
+/opt/data/nfs-server 192.168.12.100/24(rw,sync,no_subtree_check,no_root_squash)
+```
+
+#### 安装nfs 客户端
+
+```
+sudo apt install nfs-common
+```
+
+
+
+### 创建StorageClass
+
+#### 查看StorageClass
+
+```
+kubectl get storageclass
+```
+
+
+
+#### 标记一个默认的StorageClass
+
+```
+kubectl patch storageclass managed-nfs-storage -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
 
 
@@ -316,34 +381,6 @@ kubectl describe pod -n kube-system  kube-flannel-ds-r8
 
 
 ### 安装Kubesphere
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
