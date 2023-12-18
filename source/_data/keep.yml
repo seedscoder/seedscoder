@@ -13,8 +13,17 @@ base_info:
   title: 刘兆波
 
   # Your blog website author name
-  author: Keep Team
+  author: 刘兆波
+  avatar: /images/avatar.jpg
+  logo: /images/avatar.jpg
+  favicon: /images/avatar.jpg
 
+first_screen:
+  enable: true        # Option values: true | false
+  background_img: /images/bg.svg
+  background_img_dark: /images/bg.svg
+  description: You are never too old to set another goal or to dream a new dream.
+  hitokoto: false      # Option values: true | false
 # ---------------------------------------------------------------------------------------
 # Theme style settings
 # ---------------------------------------------------------------------------------------
