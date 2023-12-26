@@ -282,3 +282,8 @@ footer:
   since: 2020  # the starting year of your website. Can be null
   icp:         # ICP record number of your website. Can be null
   upyun:       # If your site is deployed on upyun, your can fill the upyun url. Can be null
+
+inject:
+  enable: true
+  css:
+    - /css/custom.css
