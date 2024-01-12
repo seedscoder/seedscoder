@@ -14,14 +14,13 @@ categories:
 - 系统：Mac M1 14.2.1 
 
 - xcode 版本： 
+  - xcodebuild -version
 
-  - ```
-    xcodebuild -version
-    
-    
-    Xcode 15.0.1
-    Build version 15A507
-    ```
+
+```
+Xcode 15.0.1
+Build version 15A507
+```
 
 
 
